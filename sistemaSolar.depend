@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1643752786 source:d:\engcomp\9º semestre 2021.2\computação gráfica\sistemasolar\main.cpp
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+
