@@ -29,7 +29,7 @@ void init(void)
 }
 void mov()
 {
-    year+=0.1;
+    year+=1;
     glutPostRedisplay();
 
 }
@@ -87,6 +87,7 @@ void display(void)
     if( automatico)
     {
         mov();
+        _sleep(35);
     }
 
 }
