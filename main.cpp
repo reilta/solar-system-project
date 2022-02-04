@@ -4,8 +4,8 @@
 #include <iostream>
 
 using namespace std;
-static int year = 0, day = 0,fov=60,rot=0;
-static float aspect=0,eixoX=0,eixoZ=0;
+static int day = 0,fov=60,rot=0;
+static float aspect=0,eixoX=0,year = 0,eixoZ=0;
 
 static double dist_mercurio = 2.0, dist_venus = 3.0,
 dist_terra = 4.0, dist_marte = 5.0, dist_jupiter = 6.5,
@@ -21,12 +21,18 @@ static double v_mercurio = 1.5, v_venus = 1.8,
 v_terra = 1.9, v_marte = 1.88, v_jupiter = 2.0,
 v_saturno = 2.5, v_urano = 3.0, v_netuno = 2.0;
 
+static bool automatico=false;
 void init(void)
 {
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glShadeModel (GL_FLAT);
 }
+void mov()
+{
+    year+=0.1;
+    glutPostRedisplay();
 
+}
 void planet(float velocity, float dimension, float distance, float r = 1.0, float g = 1.0, float b = 1.0)
 {
     glPushMatrix();
@@ -38,6 +44,8 @@ void planet(float velocity, float dimension, float distance, float r = 1.0, floa
 
     glutWireSphere(dimension, 20, 16);   /* draw sun */
     glPopMatrix();
+
+
 }
 
 void display(void)
@@ -76,6 +84,10 @@ void display(void)
 
     glPopMatrix();
     glutSwapBuffers();
+    if( automatico)
+    {
+        mov();
+    }
 
 }
 
@@ -137,11 +149,16 @@ void keyboard (unsigned char key, int x, int y)
             break;
         case 'y':
             year = (year + 1) ;
-            cout<<year<<endl;
+
             glutPostRedisplay();
             break;
         case 'Y':
             year = (year - 5) ;
+            glutPostRedisplay();
+            break;
+        case 'g':
+            automatico =!automatico;
+
             glutPostRedisplay();
             break;
         default:
