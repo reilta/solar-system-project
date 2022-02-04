@@ -17,8 +17,8 @@ size_terra = 0.3, size_marte = 0.2, size_jupiter = 0.6,
 size_saturno = 0.5, size_urano = 0.4, size_netuno = 0.4;
 
 //velocidade de cada planeta
-static double v_mercurio = 0.9, v_venus = 0.95,
-v_terra = 1.0, v_marte = 1.88, v_jupiter = 2.0,
+static double v_mercurio = 1.5, v_venus = 1.8,
+v_terra = 1.9, v_marte = 1.88, v_jupiter = 2.0,
 v_saturno = 2.5, v_urano = 3.0, v_netuno = 2.0;
 
 void init(void)
@@ -128,19 +128,20 @@ void keyboard (unsigned char key, int x, int y)
             glutPostRedisplay();
             break;
         case 'p':
-            day = (day + 10) % 360;
+            day = (day + 10) ;
             glutPostRedisplay();
             break;
         case 'P':
-            day = (day - 10) % 360;
+            day = (day - 10) ;
             glutPostRedisplay();
             break;
         case 'y':
-            year = (year + 1) % 360;
+            year = (year + 1) ;
+            cout<<year<<endl;
             glutPostRedisplay();
             break;
         case 'Y':
-            year = (year - 5) % 360;
+            year = (year - 5) ;
             glutPostRedisplay();
             break;
         default:
