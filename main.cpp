@@ -4,7 +4,8 @@
 #include <iostream>
 
 using namespace std;
-static int year = 0, day = 0, eixoX = 0, eixoZ = 0;
+static int year = 0, day = 0,fov=60,rot=0;
+static float aspect=0,eixoX=0,eixoZ=0;
 
 static double dist_mercurio = 2.0, dist_venus = 3.0,
 dist_terra = 4.0, dist_marte = 5.0, dist_jupiter = 6.5,
@@ -42,15 +43,21 @@ void planet(float velocity, float dimension, float distance, float r = 1.0, floa
 void display(void)
 {
 
-  //  gluLookAt (0.0, 0.0, 15.0, 5.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
     glClear (GL_COLOR_BUFFER_BIT);
+
     glLoadIdentity();
     glColor3f (1.0, 1.0, 1.0);
-    gluLookAt (0, 0.0, 15,0,0 , 0, 0.0, 1.0, 0.0);
+
+    gluPerspective(fov,aspect , 1.0, 100.0);
+    gluLookAt (15, 5.0, 15,0,0 , 0, 0.0, 1.0, 0.0);
+
     glTranslatef (eixoX, 0.0, eixoZ);
+    glRotatef(rot, 0.0, 1.0, 0.0);
+
 
     //sol
-    //gluLookAt (0, 0, 20, 0, eixoX, 0.0, 0.0, 1.0, 0.0);
+
     glPushMatrix();
     glutWireSphere(1.0, 20, 16);   /* draw sun */
     //glPopMatrix();
@@ -74,10 +81,11 @@ void display(void)
 
 void reshape (int w, int h)
 {
+    aspect=(float)w/float(h);
     glViewport (0, 0, (GLsizei) w, (GLsizei) h);
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
-    gluPerspective(60.0, (GLfloat) w/(GLfloat) h, 1.0, 20.0);
+    //gluPerspective(fov, aspect, 1.0, 20.0);
     glMatrixMode(GL_MODELVIEW);
     //glLoadIdentity();
    // cout<<"entrou"<<endl;
@@ -101,6 +109,22 @@ void keyboard (unsigned char key, int x, int y)
             break;
         case 's':
             eixoZ -= 1;
+            glutPostRedisplay();
+            break;
+        case 'z':
+            fov-=1;
+            glutPostRedisplay();
+            break;
+        case 'Z':
+            fov+=1;
+            glutPostRedisplay();
+            break;
+        case 'r':
+            rot-=1;
+            glutPostRedisplay();
+            break;
+        case 'R':
+            rot+=1;
             glutPostRedisplay();
             break;
         case 'p':
