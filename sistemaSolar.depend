@@ -4,3 +4,9 @@
 	<GL/glu.h>
 	<GL/glut.h>
 
+1643993786 source:c:\users\reilt\desktop\sistema-solar\main.cpp
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<iostream>
+
