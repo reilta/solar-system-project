@@ -12,12 +12,14 @@ void init(void)
     glShadeModel (GL_FLAT);
 }
 
-void planet(float velocity, float dimension, float distance)
+void planet(float velocity, float dimension, float distance, float r=1.0, float g=1.0, float b=1.0)
 {
     glPushMatrix();
     glRotatef ((GLfloat) year*(velocity), 0.0, 1.0, 0.0);
     glTranslatef (distance, 0.0, 0.0);
     glRotatef ((GLfloat) day, 0.0, 1.0, 0.0);
+
+    glColor3f (r, g, b);
 
     glutWireSphere(dimension, 20, 16);   /* draw sun */
     glPopMatrix();
@@ -41,15 +43,12 @@ void display(void)
 
     planet(0.9,0.1,2); //mercurio
     planet(0.95,0.25,3); //vênus
-    glColor3f (0.0, 0.0, 1.0);
-    planet(1.0,0.3,4); //terra
-    glColor3f (1.0, 1.0, 1.0);
+    planet(1.0,0.3,4,0.0,0.0,1.0); //terra
     planet(1.88,0.2,5); //marte
     planet(2,0.6,6.5); //jupiter
     planet(2.5,0.5,9); //saturno
     planet(3,0.4,11); //urano
-    glColor3f (2.5, 0.0, 0.0);
-    planet(2,0.4,13); //netuno
+    planet(2,0.4,13,2.5, 0.0, 0.0); //netuno
     glPushMatrix();
     glTranslatef (eixoX, 0.0, 0.0);
     glPopMatrix();
@@ -74,7 +73,6 @@ void keyboard (unsigned char key, int x, int y)
     switch (key) {
          case 'a':
             eixoX+=1;
-
             glutPostRedisplay();
             break;
          case 'd':
@@ -83,7 +81,6 @@ void keyboard (unsigned char key, int x, int y)
             break;
         case 'w':
             eixoZ+=1;
-
             glutPostRedisplay();
             break;
         case 's':
