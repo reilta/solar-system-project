@@ -10,3 +10,9 @@
 	<GL/glut.h>
 	<iostream>
 
+1644013780 source:e:\programação\opengl\solar-system-project\main.cpp
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<iostream>
+
