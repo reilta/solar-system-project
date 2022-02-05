@@ -75,10 +75,15 @@ void planet(int id, float velocity, float dimension, float distance, float r = 1
 
 
     glPushMatrix();
-        glRotatef(0, 0.0, 0.0, 0.0);
+
         glRotatef((GLfloat) year*(velocity), 0.0, 1.0, 0.0);
+
         glTranslatef(distance, 0.0, 0.0);
+        glRotatef(100, 1.0, 0.0, 0.0);
+        glRotatef((GLfloat) day, 0.0, 0.0, 1.0);
+
         gluSphere(qobj, dimension, 60, 60);
+
     glPopMatrix();
 
     gluDeleteQuadric(qobj);
