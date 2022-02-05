@@ -5,21 +5,23 @@
 #include <math.h>
 #include "image_load/image_load.h"
 
-using namespace std;
-static int day = 0,fov=60,rot=0;
-static float aspect=0,eixoX=0,year = 0,eixoZ=0;
+#define PI 3.14159265358979323846
 
-static double dist_mercurio = 2.0, dist_venus = 3.0,
+using namespace std;
+static float day = 0, fov = 60, rot = 0;
+static float aspect = 0, eixoX = 0,year = 0, eixoZ = 0;
+
+static double dist_sun = 0, dist_mercurio = 2.0, dist_venus = 3.0,
 dist_terra = 4.0, dist_marte = 5.0, dist_jupiter = 6.5,
 dist_saturno = 9.0, dist_urano = 11.0, dist_netuno = 13.0;
 
 //raio de cada planeta
-static double size_mercurio = 0.1, size_venus = 0.25,
+static double size_sun = 1, size_mercurio = 0.1, size_venus = 0.25,
 size_terra = 0.3, size_marte = 0.2, size_jupiter = 0.6,
 size_saturno = 0.5, size_urano = 0.4, size_netuno = 0.4;
 
 //velocidade de cada planeta
-static double v_mercurio = 1.5, v_venus = 1.8,
+static double v_sun = 0, v_mercurio = 1.5, v_venus = 1.8,
 v_terra = 1.9, v_marte = 1.88, v_jupiter = 2.0,
 v_saturno = 2.5, v_urano = 3.0, v_netuno = 2.0;
 
@@ -28,6 +30,7 @@ GLfloat origin[] = {0.f, 0.f, 0.f, 0.f};
 //GLUquadricObj *sphere = NULL;
 
 static bool automatico=false;
+
 void init(void)
 {
     glClearColor (0.0, 0.0, 0.0, 0.0);
@@ -38,25 +41,37 @@ void init(void)
     glEnable(GL_TEXTURE_2D);
     LoadGLTextures("textures/sun.bmp");
     LoadGLTextures("textures/mercury.bmp");
-     LoadGLTextures("textures/venus_surface.bmp");
-     LoadGLTextures("textures/earth.bmp");
-     LoadGLTextures("textures/mars.bmp");
-     LoadGLTextures("textures/jupiter.bmp");
-      LoadGLTextures("textures/saturn.bmp");
-       LoadGLTextures("textures/uranus.bmp");
-        LoadGLTextures("textures/neptune.bmp");
-
-
-
-
+    LoadGLTextures("textures/venus_surface.bmp");
+    LoadGLTextures("textures/earth.bmp");
+    LoadGLTextures("textures/mars.bmp");
+    LoadGLTextures("textures/jupiter.bmp");
+    LoadGLTextures("textures/saturn.bmp");
+    LoadGLTextures("textures/uranus.bmp");
+    LoadGLTextures("textures/neptune.bmp");
 }
 void mov()
 {
     year+=1;
+    day+=0.5;
     glutPostRedisplay();
-
 }
-void planet(int id, float velocity, float dimension, float distance, float r = 1.0, float g = 1.0, float b = 1.0)
+
+void orbitTrail(GLfloat x, GLfloat y, GLfloat radius)
+{
+	int points = 100;
+	GLfloat PI2 = 2.0 * PI;
+	glLineWidth(0.5);
+	glPushMatrix();
+	glRotatef((GLfloat) 90.0, 1.0, 0.0, 0.0);
+	glBegin(GL_LINE_LOOP);
+    for(int i = 0; i <= points; i++) {
+            /*cria os pontos de uma circunferência e os une por uma linha*/
+        glVertex2f(x + (radius * cos(i * PI2 / points)), y + (radius * sin(i * PI2 / points)));
+    }
+	glEnd();
+	glPopMatrix();
+}
+void planet(int id, float velocity, float dimension, float distance)
 {
     /*
     glPushMatrix();
@@ -75,8 +90,23 @@ void planet(int id, float velocity, float dimension, float distance, float r = 1
     gluQuadricTexture(qobj,GL_TRUE);
 	gluQuadricNormals(qobj, GLU_SMOOTH);
     glBindTexture(GL_TEXTURE_2D, id);
+/*
+    if(dimension == 1){
+        gluSphere(qobj, dimension, 60, 60);
+    }else{
+        glPushMatrix();
 
+        glRotatef((GLfloat) year*(velocity), 0.0, 1.0, 0.0);
 
+        glTranslatef(distance, 0.0, 0.0);
+        glRotatef(100, 1.0, 0.0, 0.0);
+        glRotatef((GLfloat) day, 0.0, 0.0, 1.0);
+
+        gluSphere(qobj, dimension, 60, 60);
+
+        glPopMatrix();
+    }
+*/
     glPushMatrix();
 
         glRotatef((GLfloat) year*(velocity), 0.0, 1.0, 0.0);
@@ -101,24 +131,48 @@ void display(void){
     glLoadIdentity();
     glColor3f (1.0, 1.0, 1.0);
 
-    gluPerspective(fov,aspect , 1.0, 100.0);
-    gluLookAt (15, 5.0, 15,0,0 , 0, 0.0, 1.0, 0.0);
+    gluPerspective(fov, aspect, 1.0, 100.0);
+    gluLookAt (15, 5.0, 15, 0, 0, 0, 0.0, 1.0, 0.0);
 
     glTranslatef (eixoX, 0.0, eixoZ);
     glRotatef(rot, 0.0, 1.0, 0.0);
 
     glPushMatrix();
-     //glutWireSphere(1.0, 20, 16);   /* draw sun */
-    planet(1,0,1,0);        //sol
-    //planet(1,v_mercurio,10,dist_mercurio);
-    planet(2,v_mercurio,size_mercurio,dist_mercurio); //mercurio
-    planet(3,v_venus,size_venus,dist_venus); //vênus
-    planet(4,v_terra,size_terra,dist_terra); //terra
-    planet(5,v_marte,size_marte,dist_marte); //marte
-    planet(6, v_jupiter,size_jupiter,dist_jupiter); //jupiter
-    planet(7,v_saturno,size_saturno,dist_saturno); //saturno
-    planet(8,v_urano,size_urano,dist_urano); //urano
-    planet(9,v_netuno,size_netuno,dist_netuno); //netuno
+    /* sol */
+    planet(1,v_sun,size_sun,dist_sun);
+
+    /* mercurio */
+    orbitTrail(0, 0, dist_mercurio);
+    planet(2,v_mercurio,size_mercurio,dist_mercurio);
+
+    /* vênus */
+    orbitTrail(0, 0, dist_venus);
+    planet(3,v_venus,size_venus,dist_venus);
+
+    /* terra */
+    orbitTrail(0, 0, dist_terra);
+    planet(4,v_terra,size_terra,dist_terra);
+
+    /* marte */
+    orbitTrail(0, 0, dist_marte);
+    planet(5,v_marte,size_marte,dist_marte);
+
+    /* jupiter */
+    orbitTrail(0, 0, dist_jupiter);
+    planet(6, v_jupiter,size_jupiter,dist_jupiter);
+
+    /* saturno */
+    orbitTrail(0, 0, dist_saturno);
+    planet(7,v_saturno,size_saturno,dist_saturno);
+
+    /* urano */
+    orbitTrail(0, 0, dist_urano);
+    planet(8,v_urano,size_urano,dist_urano);
+
+    /* netuno */
+    orbitTrail(0, 0, dist_netuno);
+    planet(9,v_netuno,size_netuno,dist_netuno);
+
     glPushMatrix();
     glTranslatef (eixoX, 0.0, 0.0);
     glPopMatrix();
@@ -126,7 +180,7 @@ void display(void){
     glPopMatrix();
     glutSwapBuffers();
 
-    if( automatico){
+    if(automatico){
         mov();
         _sleep(35);
     }
