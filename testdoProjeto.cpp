@@ -33,6 +33,8 @@ void init(void)
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glShadeModel (GL_FLAT);
 
+    glEnable(GL_DEPTH_TEST);
+    glClear( GL_DEPTH_BUFFER_BIT );
     glEnable(GL_TEXTURE_2D);
     LoadGLTextures("textures/sun.bmp");
     LoadGLTextures("textures/mercury.bmp");
@@ -43,6 +45,7 @@ void init(void)
       LoadGLTextures("textures/saturn.bmp");
        LoadGLTextures("textures/uranus.bmp");
         LoadGLTextures("textures/neptune.bmp");
+
 
 
 
@@ -94,7 +97,7 @@ void planet(int id, float velocity, float dimension, float distance, float r = 1
 
 void display(void){
     glClear (GL_COLOR_BUFFER_BIT);
-
+    glClear( GL_DEPTH_BUFFER_BIT );
     glLoadIdentity();
     glColor3f (1.0, 1.0, 1.0);
 
@@ -104,7 +107,8 @@ void display(void){
     glTranslatef (eixoX, 0.0, eixoZ);
     glRotatef(rot, 0.0, 1.0, 0.0);
 
-
+    glPushMatrix();
+     //glutWireSphere(1.0, 20, 16);   /* draw sun */
     planet(1,0,1,0);        //sol
     //planet(1,v_mercurio,10,dist_mercurio);
     planet(2,v_mercurio,size_mercurio,dist_mercurio); //mercurio
