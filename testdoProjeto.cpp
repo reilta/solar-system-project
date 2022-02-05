@@ -32,6 +32,20 @@ void init(void)
 {
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glShadeModel (GL_FLAT);
+
+    glEnable(GL_TEXTURE_2D);
+    LoadGLTextures("textures/sun.bmp");
+    LoadGLTextures("textures/mercury.bmp");
+     LoadGLTextures("textures/venus_surface.bmp");
+     LoadGLTextures("textures/earth.bmp");
+     LoadGLTextures("textures/mars.bmp");
+     LoadGLTextures("textures/jupiter.bmp");
+      LoadGLTextures("textures/saturn.bmp");
+       LoadGLTextures("textures/uranus.bmp");
+        LoadGLTextures("textures/neptune.bmp");
+
+
+
 }
 void mov()
 {
@@ -39,7 +53,7 @@ void mov()
     glutPostRedisplay();
 
 }
-void planet(char * path_file, float velocity, float dimension, float distance, float r = 1.0, float g = 1.0, float b = 1.0)
+void planet(int id, float velocity, float dimension, float distance, float r = 1.0, float g = 1.0, float b = 1.0)
 {
     /*
     glPushMatrix();
@@ -57,9 +71,8 @@ void planet(char * path_file, float velocity, float dimension, float distance, f
 
     gluQuadricTexture(qobj,GL_TRUE);
 	gluQuadricNormals(qobj, GLU_SMOOTH);
+    glBindTexture(GL_TEXTURE_2D, id);
 
-    glEnable(GL_TEXTURE_2D);
-    LoadGLTextures(path_file);
 
     glPushMatrix();
         glRotatef(0, 0.0, 0.0, 0.0);
@@ -70,7 +83,7 @@ void planet(char * path_file, float velocity, float dimension, float distance, f
 
     gluDeleteQuadric(qobj);
 
-    glDisable(GL_TEXTURE_2D);
+   // glDisable(GL_TEXTURE_2D);
 
 }
 
@@ -87,16 +100,16 @@ void display(void){
     glRotatef(rot, 0.0, 1.0, 0.0);
 
 
-    planet("textures/sun.bmp",0,1,0);        //sol
-    planet("textures/mercury.bmp",v_mercurio,size_mercurio,dist_mercurio);
-    planet("textures/mercury.bmp",v_mercurio,size_mercurio,dist_mercurio); //mercurio
-    planet("textures/venus_surface.bmp",v_venus,size_venus,dist_venus); //vênus
-    planet("textures/earth.bmp",v_terra,size_terra,dist_terra); //terra
-    planet("textures/mars.bmp",v_marte,size_marte,dist_marte); //marte
-    planet("textures/jupiter.bmp", v_jupiter,size_jupiter,dist_jupiter); //jupiter
-    planet("textures/saturn.bmp",v_saturno,size_saturno,dist_saturno); //saturno
-    planet("textures/uranus.bmp",v_urano,size_urano,dist_urano); //urano
-    planet("textures/neptune.bmp",v_netuno,size_netuno,dist_netuno); //netuno
+    planet(1,0,1,0);        //sol
+    //planet(1,v_mercurio,10,dist_mercurio);
+    planet(2,v_mercurio,size_mercurio,dist_mercurio); //mercurio
+    planet(3,v_venus,size_venus,dist_venus); //vênus
+    planet(4,v_terra,size_terra,dist_terra); //terra
+    planet(5,v_marte,size_marte,dist_marte); //marte
+    planet(6, v_jupiter,size_jupiter,dist_jupiter); //jupiter
+    planet(7,v_saturno,size_saturno,dist_saturno); //saturno
+    planet(8,v_urano,size_urano,dist_urano); //urano
+    planet(9,v_netuno,size_netuno,dist_netuno); //netuno
     glPushMatrix();
     glTranslatef (eixoX, 0.0, 0.0);
     glPopMatrix();
