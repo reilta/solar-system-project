@@ -47,6 +47,7 @@ void init(void)
     LoadGLTextures("textures/uranus.bmp");
     LoadGLTextures("textures/neptune.bmp");
     LoadGLTextures("textures/saturnring.bmp");
+    LoadGLTextures("textures/stars_milky_way.bmp");
 
 }
 
@@ -73,10 +74,71 @@ void orbitTrail(GLfloat x, GLfloat y, GLfloat radius)
 	glPopMatrix();
 }
 
+void backgroundStarsTexture(int id)
+{
+    glBindTexture(GL_TEXTURE_2D,id);
+    glEnable (GL_TEXTURE_2D);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0,1);
+        glVertex3f(-50.f,50.f,-50.f);
+        glTexCoord2f(0,0);
+        glVertex3f(-50.f,-50.f,-50.f);
+        glTexCoord2f(1,0);
+        glVertex3f(50.f,-50.f,-50.f);
+        glTexCoord2f(1,1);
+        glVertex3f(50.f,50.f,-50.f);
+
+        glTexCoord2f(0,1);
+        glVertex3f(-50.f,-50.f,50.f);
+        glTexCoord2f(0,0);
+        glVertex3f(-50.f,50.f,50.f);
+        glTexCoord2f(1,0);
+        glVertex3f(50.f,50.f,50.f);
+        glTexCoord2f(1,1);
+        glVertex3f(50.f,-50.f,50.f);
+
+        glTexCoord2f(0,1);
+        glVertex3f(-50.f,-50.f,-50.f);
+        glTexCoord2f(0,0);
+        glVertex3f(-50.f,50.f,-50.f);
+        glTexCoord2f(1,0);
+        glVertex3f(-50.f,50.f,50.f);
+        glTexCoord2f(1,1);
+        glVertex3f(-50.f,-50.f,50.f);
+
+        glTexCoord2f(0,1);
+        glVertex3f(50.f,-50.f,-50.f);
+        glTexCoord2f(0,0);
+        glVertex3f(50.f,50.f,-50.f);
+        glTexCoord2f(1,0);
+        glVertex3f(50.f,50.f,50.f);
+        glTexCoord2f(1,1);
+        glVertex3f(50.f,-50.f,50.f);
+
+        glTexCoord2f(0,1);
+        glVertex3f(-50.f,-50.f,50.f);
+        glTexCoord2f(0,0);
+        glVertex3f(-50.f,-50.f,-50.f);
+        glTexCoord2f(1,0);
+        glVertex3f(50.f,-50.f,-50.f);
+        glTexCoord2f(1,1);
+        glVertex3f(50.f,-50.f,50.f);
+
+        glTexCoord2f(0,1);
+        glVertex3f(-50.f,50.f,50.f);
+        glTexCoord2f(0,0);
+        glVertex3f(-50.f,50.f,-50.f);
+        glTexCoord2f(1,0);
+        glVertex3f(50.f,50.f,-50.f);
+        glTexCoord2f(1,1);
+        glVertex3f(50.f,50.f,50.f);
+
+    glEnd();
+}
+
 void planet(int id, float velocity, float dimension, float distance, bool ring = false, bool moon =false)
 {
     GLUquadric *qobj = gluNewQuadric();
-
 
 	gluQuadricOrientation(qobj, GLU_OUTSIDE);
 	gluQuadricDrawStyle(qobj, GLU_FILL);
@@ -99,7 +161,6 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
             glTranslatef(0.5, 0.0, 0.0);
             GLUquadric *qobjmoon = gluNewQuadric();
 
-
             gluQuadricOrientation(qobjmoon, GLU_OUTSIDE);
             gluQuadricDrawStyle(qobjmoon, GLU_FILL);
 
@@ -108,7 +169,6 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
             glBindTexture(GL_TEXTURE_2D, 2);
             gluSphere(qobjmoon, dimension/4, 60, 60);
         }
-
 
         if(ring){
             glBindTexture(GL_TEXTURE_2D, 10);
@@ -135,13 +195,16 @@ void display(void){
     glLoadIdentity();
     glColor3f (1.0, 1.0, 1.0);
 
-    gluPerspective(fov, aspect, 1.0, 100.0);
+    gluPerspective(fov, aspect, 1.0, 150.0);
     gluLookAt (15, inclinacao, 15, 0, 0, 0, 0.0, 1.0, 0.0);
 
     glTranslatef (eixoX, 0.0, eixoZ);
     glRotatef(rot, 0.0, 1.0, 0.0);
 
     glPushMatrix();
+
+    backgroundStarsTexture(11);
+
     /* sol */
     planet(1,v_sun,size_sun,dist_sun);
 
@@ -222,7 +285,6 @@ void keyboard (unsigned char key, int x, int y)
             eixoZ -= 1;
             glutPostRedisplay();
             break;
-
         case 'i':
             if (inclinacao<29){
                 inclinacao+=1;
@@ -231,9 +293,7 @@ void keyboard (unsigned char key, int x, int y)
                 }else{
                     fov-=2;
                 }
-
             }
-
             glutPostRedisplay();
             break;
         case 'I':
@@ -242,11 +302,8 @@ void keyboard (unsigned char key, int x, int y)
                 inclinacao-=1;
                 fov+=1;
             }
-
-
             glutPostRedisplay();
             break;
-
         case 'z':
             fov-=1;
             glutPostRedisplay();
@@ -255,8 +312,6 @@ void keyboard (unsigned char key, int x, int y)
             fov+=1;
             glutPostRedisplay();
             break;
-
-
         case 'r':
             rot-=1;
             glutPostRedisplay();
@@ -265,8 +320,6 @@ void keyboard (unsigned char key, int x, int y)
             rot+=1;
             glutPostRedisplay();
             break;
-
-
         case 'p':
             day = (day + 10) ;
             glutPostRedisplay();
@@ -275,8 +328,6 @@ void keyboard (unsigned char key, int x, int y)
             day = (day - 10) ;
             glutPostRedisplay();
             break;
-
-
         case 'y':
             year = (year + 1) ;
             glutPostRedisplay();
@@ -285,13 +336,10 @@ void keyboard (unsigned char key, int x, int y)
             year = (year - 1) ;
             glutPostRedisplay();
             break;
-
-
         case 'g':
             automatico =!automatico;
             glutPostRedisplay();
             break;
-
         default:
             break;
     }
