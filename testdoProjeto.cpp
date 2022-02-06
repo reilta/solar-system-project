@@ -21,13 +21,11 @@ size_terra = 0.3, size_marte = 0.2, size_jupiter = 0.6,
 size_saturno = 0.5, size_urano = 0.4, size_netuno = 0.4;
 
 /* velocidade de cada planeta */
-static double v_sun = 0, v_mercurio = 1.5, v_venus = 1.8,
-v_terra = 1.9, v_marte = 1.88, v_jupiter = 2.0,
-v_saturno = 2.5, v_urano = 3.0, v_netuno = 2.0;
+static double v_sun = 0, v_mercurio = 4.16, v_venus = 1.61,
+v_terra = 1.0, v_marte = 0.53, v_jupiter = 0.28,
+v_saturno = 0.11, v_urano = 0.05, v_netuno = 0.02;
 
-//GLuint texture[1];      // storage for textures
 GLfloat origin[] = {0.f, 0.f, 0.f, 0.f};
-//GLUquadricObj *sphere = NULL;
 
 static bool automatico=false;
 
@@ -37,7 +35,7 @@ void init(void)
     glShadeModel (GL_FLAT);
 
     glEnable(GL_DEPTH_TEST);
-    glClear( GL_DEPTH_BUFFER_BIT );
+    glClear(GL_DEPTH_BUFFER_BIT);
     glEnable(GL_TEXTURE_2D);
     LoadGLTextures("textures/sun.bmp");
     LoadGLTextures("textures/mercury.bmp");
@@ -76,15 +74,6 @@ void orbitTrail(GLfloat x, GLfloat y, GLfloat radius)
 
 void planet(int id, float velocity, float dimension, float distance, bool ring = false)
 {
-    /*
-    glPushMatrix();
-        glColor3f(r,g,b);
-        glRotatef((GLfloat) year*(velocity), 0.0, 1.0, 0.0);
-        glTranslatef (distance, 0.0, 0.0);
-        glBindTexture(GL_TEXTURE_2D, texture[0]);   // choose the texture to use.
-        gluSphere(sphere,dimension,100,100);
-    glPopMatrix();
-    */
     GLUquadric *qobj = gluNewQuadric();
 
 	gluQuadricOrientation(qobj, GLU_OUTSIDE);
@@ -93,23 +82,7 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
     gluQuadricTexture(qobj,GL_TRUE);
 	gluQuadricNormals(qobj, GLU_SMOOTH);
     glBindTexture(GL_TEXTURE_2D, id);
-/*
-    if(dimension == 1){
-        gluSphere(qobj, dimension, 60, 60);
-    }else{
-        glPushMatrix();
 
-        glRotatef((GLfloat) year*(velocity), 0.0, 1.0, 0.0);
-
-        glTranslatef(distance, 0.0, 0.0);
-        glRotatef(100, 1.0, 0.0, 0.0);
-        glRotatef((GLfloat) day, 0.0, 0.0, 1.0);
-
-        gluSphere(qobj, dimension, 60, 60);
-
-        glPopMatrix();
-    }
-*/
     glPushMatrix();
 
         glRotatef((GLfloat) year*(velocity), 0.0, 1.0, 0.0);
@@ -137,9 +110,6 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
     glPopMatrix();
 
     gluDeleteQuadric(qobj);
-
-   // glDisable(GL_TEXTURE_2D);
-
 }
 
 void display(void){
@@ -261,11 +231,10 @@ void keyboard (unsigned char key, int x, int y)
             break;
         case 'y':
             year = (year + 1) ;
-
             glutPostRedisplay();
             break;
         case 'Y':
-            year = (year - 5) ;
+            year = (year - 1) ;
             glutPostRedisplay();
             break;
         case 'g':
