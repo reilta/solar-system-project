@@ -32,11 +32,14 @@ static bool automatico=false;
 void init(void)
 {
     glClearColor (0.0, 0.0, 0.0, 0.0);
-    glShadeModel (GL_FLAT);
+    glShadeModel (GL_FLAT); // usando o modelo flat de calculo de iluminação
 
-    glEnable(GL_DEPTH_TEST);
-    glClear(GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_DEPTH_TEST); // habilita o algoritimo de visibilidade
+
+    //glClear(GL_DEPTH_BUFFER_BIT);
+
+    glEnable(GL_TEXTURE_2D); //habilita as texturas
+    // carrega todas as texturas
     LoadGLTextures("textures/sun.bmp");
     LoadGLTextures("textures/mercury.bmp");
     LoadGLTextures("textures/venus_surface.bmp");
@@ -51,7 +54,7 @@ void init(void)
 
 }
 
-void mov()
+void mov() // função usada para fazer a movimentação automatica dos planetas
 {
     year+=1;
     day+=5;
@@ -61,23 +64,33 @@ void mov()
 void orbitTrail(GLfloat x, GLfloat y, GLfloat radius)
 {
 	int points = 100;
-	glLineWidth(0.5);
-	glPushMatrix();
-	glRotatef((GLfloat) 90.0, 1.0, 0.0, 0.0);
-	glBegin(GL_LINE_LOOP);
-    for(int i = 0; i <= points; i++) {
-        GLfloat tetha = float(i) * 2.0 * PI / points;
-        /* cria os pontos de uma circunferência e os une por uma linha */
-        glVertex2f(x + (radius * cos(tetha)), y + (radius * sin(tetha)));
-    }
-	glEnd();
-	glPopMatrix();
+
+    glLineWidth(0.5); // define a espessura da linha
+
+	glPushMatrix();  // insere a matriz de transformação atual na pilha
+        glRotatef((GLfloat) 90.0, 1.0, 0.0, 0.0); // rotaciona as linhas para ficarem na horizontal
+
+        glBegin(GL_LINE_LOOP); // habilita a exibição de  linhas conectadas por pontos
+
+        //definição dos pontos
+        for(int i = 0; i <= points; i++) {
+            GLfloat tetha = float(i) * 2.0 * PI / points;
+            /* cria os pontos de uma circunferência e os une por uma linha */
+            glVertex2f(x + (radius * cos(tetha)), y + (radius * sin(tetha)));
+        }
+        glEnd();
+
+
+	glPopMatrix(); // remove a matriz do topo da pilha
 }
 
 void backgroundStarsTexture(int id)
 {
-    glBindTexture(GL_TEXTURE_2D,id);
-    glEnable (GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,id); // define a textura pelo id
+
+   // glEnable (GL_TEXTURE_2D); //
+
+    // cria seis quadrados, formando uma cubo, e associa os pontos das faces com a textura
     glBegin(GL_QUADS);
         glTexCoord2f(0,1);
         glVertex3f(-50.f,50.f,-50.f);
@@ -138,27 +151,32 @@ void backgroundStarsTexture(int id)
 
 void planet(int id, float velocity, float dimension, float distance, bool ring = false, bool moon =false)
 {
+    // cria um obejto do tipo quadric
     GLUquadric *qobj = gluNewQuadric();
 
-	gluQuadricOrientation(qobj, GLU_OUTSIDE);
-	gluQuadricDrawStyle(qobj, GLU_FILL);
+	//gluQuadricOrientation(qobj, GLU_OUTSIDE);
+	//gluQuadricDrawStyle(qobj, GLU_FILL);
 
-    gluQuadricTexture(qobj,GL_TRUE);
-	gluQuadricNormals(qobj, GLU_SMOOTH);
-    glBindTexture(GL_TEXTURE_2D, id);
+
+    gluQuadricTexture(qobj,GL_TRUE); // habilita a textura do objeto tipo quadric
+	//gluQuadricNormals(qobj, GLU_SMOOTH);
+    glBindTexture(GL_TEXTURE_2D, id); // seleciona a textura pelo id
 
     glPushMatrix();
 
-        glRotatef((GLfloat) year*(velocity), 0.0, 1.0, 0.0);
+        glRotatef((GLfloat) year*(velocity), 0.0, 1.0, 0.0); //possibilita a rotação dos planetas em torno de um ponto inicial
 
-        glTranslatef(distance, 0.0, 0.0);
-        glRotatef(100, 1.0, 0.0, 0.0);
-        glRotatef((GLfloat) day, 0.0, 0.0, -1.0);
+        glTranslatef(distance, 0.0, 0.0); // desloca os planetas em relação ao ponto inicial
+        glRotatef(100, 1.0, 0.0, 0.0);   // rotaciona os planetas para alinhar a  textura da forma correta
+        glRotatef((GLfloat) day, 0.0, 0.0, -1.0); // rotaciona os planetas em torno do proprio eixo
 
-        gluSphere(qobj, dimension, 60, 60);
+        gluSphere(qobj, dimension, 60, 60); // cria uma esfera a partir do quadric
+
+        // cria  a lua para os planetas que habilitarem
         if(moon){
-            glRotatef((GLfloat) year*(velocity), 0.0, 0.0, -1.0);
+            glRotatef((GLfloat) year*(velocity)*2, 0.0, 0.0, 1.0);
             glTranslatef(0.5, 0.0, 0.0);
+            //glRotatef((GLfloat) day*(velocity)*2, 0.0, 0.0, -1.0);
             GLUquadric *qobjmoon = gluNewQuadric();
 
             gluQuadricOrientation(qobjmoon, GLU_OUTSIDE);
@@ -169,7 +187,7 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
             glBindTexture(GL_TEXTURE_2D, 2);
             gluSphere(qobjmoon, dimension/4, 60, 60);
         }
-
+        // cria aneis em volta dos planetas que habilitarem
         if(ring){
             glBindTexture(GL_TEXTURE_2D, 10);
             glRotatef(100, 1.0, 0.0, 0.0);
@@ -190,12 +208,17 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
 }
 
 void display(void){
-    glClear (GL_COLOR_BUFFER_BIT);
-    glClear( GL_DEPTH_BUFFER_BIT );
-    glLoadIdentity();
-    glColor3f (1.0, 1.0, 1.0);
 
-    gluPerspective(fov, aspect, 1.0, 150.0);
+    glClear (GL_COLOR_BUFFER_BIT);//limpa o buffer das cores
+    glClear( GL_DEPTH_BUFFER_BIT );//limpa o buffer da visibilidade
+
+    glLoadIdentity(); // carrega a matriz identidade
+
+    //glColor3f (1.0, 1.0, 1.0);
+
+    //(
+    gluPerspective(fov, aspect, 1.0, 150.0); // configura o frustrum
+
     gluLookAt (15, inclinacao, 15, 0, 0, 0, 0.0, 1.0, 0.0);
 
     glTranslatef (eixoX, 0.0, eixoZ);
@@ -206,17 +229,21 @@ void display(void){
     backgroundStarsTexture(11);
 
     /* sol */
+
     planet(1,v_sun,size_sun,dist_sun);
 
     /* mercurio */
+
     orbitTrail(0, 0, dist_mercurio);
     planet(2,v_mercurio,size_mercurio,dist_mercurio);
 
     /* vênus */
+
     orbitTrail(0, 0, dist_venus);
     planet(3,v_venus,size_venus,dist_venus);
 
     /* terra */
+
     orbitTrail(0, 0, dist_terra);
     planet(4,v_terra,size_terra,dist_terra,false,true);
 
@@ -255,15 +282,16 @@ void display(void){
 
 void reshape (int w, int h)
 {
-    aspect=(float)w/float(h);
-    glViewport (0, 0, (GLsizei) w, (GLsizei) h);
+    aspect=(float)w/float(h);// Calcula a  razão do aspecto
+
+    glViewport (0, 0, (GLsizei) w, (GLsizei) h); // é a região retangular do near do frustrum
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
-    //gluPerspective(fov, aspect, 1.0, 20.0);
-    glMatrixMode(GL_MODELVIEW);
-    //glLoadIdentity();
-   // cout<<"entrou"<<endl;
- //   gluLookAt (0.0, 0.0, 15.0, 5.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+
+
+
+    glMatrixMode(GL_MODELVIEW); //especifica a matriz que vai ser aplicada as  proximas operações matriciais
+
 }
 
 void keyboard (unsigned char key, int x, int y)
@@ -279,6 +307,7 @@ void keyboard (unsigned char key, int x, int y)
             break;
         case 'w':
             eixoZ += 1;
+
             glutPostRedisplay();
             break;
         case 's':
@@ -305,11 +334,19 @@ void keyboard (unsigned char key, int x, int y)
             glutPostRedisplay();
             break;
         case 'z':
-            fov-=1;
+            if(fov>1)
+            {
+                fov-=1;
+            }
+
             glutPostRedisplay();
             break;
         case 'Z':
-            fov+=1;
+            if(fov<100)
+            {
+                fov+=1;
+            }
+
             glutPostRedisplay();
             break;
         case 'r':
