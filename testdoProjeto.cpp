@@ -15,12 +15,12 @@ static double dist_sun = 0, dist_mercurio = 2.0, dist_venus = 3.0,
 dist_terra = 4.0, dist_marte = 5.0, dist_jupiter = 6.5,
 dist_saturno = 9.0, dist_urano = 11.0, dist_netuno = 13.0;
 
-//raio de cada planeta
+/* raio de cada planeta */
 static double size_sun = 1, size_mercurio = 0.1, size_venus = 0.25,
 size_terra = 0.3, size_marte = 0.2, size_jupiter = 0.6,
 size_saturno = 0.5, size_urano = 0.4, size_netuno = 0.4;
 
-//velocidade de cada planeta
+/* velocidade de cada planeta */
 static double v_sun = 0, v_mercurio = 1.5, v_venus = 1.8,
 v_terra = 1.9, v_marte = 1.88, v_jupiter = 2.0,
 v_saturno = 2.5, v_urano = 3.0, v_netuno = 2.0;
@@ -48,7 +48,9 @@ void init(void)
     LoadGLTextures("textures/saturn.bmp");
     LoadGLTextures("textures/uranus.bmp");
     LoadGLTextures("textures/neptune.bmp");
+    LoadGLTextures("textures/saturnring.bmp");
 }
+
 void mov()
 {
     year+=1;
@@ -59,19 +61,20 @@ void mov()
 void orbitTrail(GLfloat x, GLfloat y, GLfloat radius)
 {
 	int points = 100;
-	GLfloat PI2 = 2.0 * PI;
 	glLineWidth(0.5);
 	glPushMatrix();
 	glRotatef((GLfloat) 90.0, 1.0, 0.0, 0.0);
 	glBegin(GL_LINE_LOOP);
     for(int i = 0; i <= points; i++) {
-            /*cria os pontos de uma circunferência e os une por uma linha*/
-        glVertex2f(x + (radius * cos(i * PI2 / points)), y + (radius * sin(i * PI2 / points)));
+        GLfloat tetha = float(i) * 2.0 * PI / points;
+        /* cria os pontos de uma circunferência e os une por uma linha */
+        glVertex2f(x + (radius * cos(tetha)), y + (radius * sin(tetha)));
     }
 	glEnd();
 	glPopMatrix();
 }
-void planet(int id, float velocity, float dimension, float distance)
+
+void planet(int id, float velocity, float dimension, float distance, bool ring = false)
 {
     /*
     glPushMatrix();
@@ -116,6 +119,20 @@ void planet(int id, float velocity, float dimension, float distance)
         glRotatef((GLfloat) day, 0.0, 0.0, 1.0);
 
         gluSphere(qobj, dimension, 60, 60);
+
+        if(ring){
+            glBindTexture(GL_TEXTURE_2D, 10);
+            glRotatef(100, 1.0, 0.0, 0.0);
+            orbitTrail(0, 0, 0.64);
+            orbitTrail(0, 0, 0.67);
+            orbitTrail(0, 0, 0.69);
+            orbitTrail(0, 0, 0.7);
+            orbitTrail(0, 0, 0.74);
+            orbitTrail(0, 0, 0.78);
+            orbitTrail(0, 0, 0.8);
+            orbitTrail(0, 0, 0.85);
+            orbitTrail(0, 0, 0.88);
+        }
 
     glPopMatrix();
 
@@ -163,7 +180,7 @@ void display(void){
 
     /* saturno */
     orbitTrail(0, 0, dist_saturno);
-    planet(7,v_saturno,size_saturno,dist_saturno);
+    planet(7,v_saturno,size_saturno,dist_saturno,true);
 
     /* urano */
     orbitTrail(0, 0, dist_urano);
@@ -253,7 +270,6 @@ void keyboard (unsigned char key, int x, int y)
             break;
         case 'g':
             automatico =!automatico;
-
             glutPostRedisplay();
             break;
         default:
@@ -265,17 +281,17 @@ int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
 
-    //configuração da janela
-    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB); //modo
-    glutInitWindowSize (1000, 600); //dimensão da janela
-    glutInitWindowPosition (0, 0); //posição
-    glutCreateWindow ("Solar System - Igor Dias/Matheus Santos/Reilta"); //window's name
+    /* configuração da janela */
+    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB); /* modo */
+    glutInitWindowSize (1000, 600); /* dimensão da janela */
+    glutInitWindowPosition (0, 0); /* posição */
+    glutCreateWindow ("Solar System - Igor Dias/Matheus Santos/Reilta"); /* window's name */
 
-    //chama as funções principais
+    /* chama as funções principais */
     init();
-    glutDisplayFunc(display); //chamada quando um pixel na janela necessita ser atualizado.
-    glutReshapeFunc(reshape); //chamado quando a janela é redimensionada
-    glutKeyboardFunc(keyboard); //chamada quando uma tecla do teclado é pressionada
+    glutDisplayFunc(display); /* chamada quando um pixel na janela necessita ser atualizado. */
+    glutReshapeFunc(reshape); /* chamado quando a janela é redimensionada */
+    glutKeyboardFunc(keyboard); /* chamada quando uma tecla do teclado é pressionada */
 
     glutMainLoop();
     return 0;
