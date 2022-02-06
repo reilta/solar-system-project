@@ -147,11 +147,7 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
     /* cria um obejto do tipo quadric */
     GLUquadric *qobj = gluNewQuadric();
 
-	//gluQuadricOrientation(qobj, GLU_OUTSIDE);
-	//gluQuadricDrawStyle(qobj, GLU_FILL);
-
     gluQuadricTexture(qobj,GL_TRUE); /* habilita a textura do objeto tipo quadric */
-	//gluQuadricNormals(qobj, GLU_SMOOTH);
     glBindTexture(GL_TEXTURE_2D, id); /* seleciona a textura pelo id */
 
     glPushMatrix();
@@ -168,12 +164,7 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
         glTranslatef(0.5, 0.0, 0.0);
         //glRotatef((GLfloat) day*(velocity)*2, 0.0, 0.0, -1.0);
         GLUquadric *qobjmoon = gluNewQuadric();
-
-        gluQuadricOrientation(qobjmoon, GLU_OUTSIDE);
-        gluQuadricDrawStyle(qobjmoon, GLU_FILL);
-
         gluQuadricTexture(qobjmoon,GL_TRUE);
-        gluQuadricNormals(qobjmoon, GLU_SMOOTH);
         glBindTexture(GL_TEXTURE_2D, 2);
         gluSphere(qobjmoon, dimension/4, 60, 60);
     }
@@ -198,16 +189,13 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
 
 void display(void)
 {
-    glClear (GL_COLOR_BUFFER_BIT); /* limpa o buffer das cores */
-    glClear( GL_DEPTH_BUFFER_BIT ); /* limpa o buffer da visibilidade */
+    glClear(GL_COLOR_BUFFER_BIT); /* limpa o buffer das cores */
+    glClear(GL_DEPTH_BUFFER_BIT ); /* limpa o buffer da visibilidade */
 
     glLoadIdentity(); /* carrega a matriz identidade */
-
     gluPerspective(fov, aspect, 1.0, 150.0); /* configura o frustrum */
-
-    gluLookAt (15, inclinacao, 15, 0, 0, 0, 0.0, 1.0, 0.0); /* configuração da câmera */
-
-    glTranslatef (eixoX, eixoY, eixoZ); /* habilita movimentação da câmera */
+    gluLookAt(15, inclinacao, 15, 0, 0, 0, 0.0, 1.0, 0.0); /* configuração da câmera */
+    glTranslatef(eixoX, eixoY, eixoZ); /* habilita movimentação da câmera */
     glRotatef(rot, 0.0, 1.0, 0.0); /* habilita a rotação */
 
     glPushMatrix();
@@ -262,7 +250,7 @@ void display(void)
 
 void reshape(int w, int h)
 {
-    aspect=(float)w/float(h); /* Calcula a  razão do aspecto */
+    aspect = (float)w/float(h); /* Calcula a  razão do aspecto */
 
     glViewport(0, 0, (GLsizei) w, (GLsizei) h); /* é a região retangular do near do frustrum */
     //glMatrixMode(GL_PROJECTION);
@@ -272,7 +260,7 @@ void reshape(int w, int h)
 
 void keyboard(unsigned char key, int x, int y)
 {
-    switch (key) {
+    switch(key) {
         /* casos para mover a câmera nas 4 direções e para frente e para atrás (teclas a,w,s,d,q,e) */
         case 'a':
             eixoX += 0.2;
@@ -375,8 +363,8 @@ int main(int argc, char** argv)
     glutInit(&argc, argv);
 
     /* configuração da janela */
-    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB); /* modo */
-    glutInitWindowSize (1000, 600); /* dimensão da janela */
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB); /* modo */
+    glutInitWindowSize(1000, 600); /* dimensão da janela */
     glutInitWindowPosition (0, 0); /* posição */
     glutCreateWindow ("Solar System - Igor Dias/Matheus Santos/Reilta"); /* window's name */
 
