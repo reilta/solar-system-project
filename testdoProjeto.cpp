@@ -8,7 +8,7 @@
 #define PI 3.14159265358979323846
 
 using namespace std;
-static float day = 0, fov = 60, rot = 0;
+static float day = 0, fov = 60, rot = 0,inclinacao=5;
 static float aspect = 0, eixoX = 0,year = 0, eixoZ = 0;
 
 static double dist_sun = 0, dist_mercurio = 2.0, dist_venus = 3.0,
@@ -47,12 +47,13 @@ void init(void)
     LoadGLTextures("textures/uranus.bmp");
     LoadGLTextures("textures/neptune.bmp");
     LoadGLTextures("textures/saturnring.bmp");
+
 }
 
 void mov()
 {
     year+=1;
-    day+=0.5;
+    day+=5;
     glutPostRedisplay();
 }
 
@@ -72,9 +73,10 @@ void orbitTrail(GLfloat x, GLfloat y, GLfloat radius)
 	glPopMatrix();
 }
 
-void planet(int id, float velocity, float dimension, float distance, bool ring = false)
+void planet(int id, float velocity, float dimension, float distance, bool ring = false, bool moon =false)
 {
     GLUquadric *qobj = gluNewQuadric();
+
 
 	gluQuadricOrientation(qobj, GLU_OUTSIDE);
 	gluQuadricDrawStyle(qobj, GLU_FILL);
@@ -89,9 +91,24 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
 
         glTranslatef(distance, 0.0, 0.0);
         glRotatef(100, 1.0, 0.0, 0.0);
-        glRotatef((GLfloat) day, 0.0, 0.0, 1.0);
+        glRotatef((GLfloat) day, 0.0, 0.0, -1.0);
 
         gluSphere(qobj, dimension, 60, 60);
+        if(moon){
+            glRotatef((GLfloat) year*(velocity), 0.0, 0.0, -1.0);
+            glTranslatef(0.5, 0.0, 0.0);
+            GLUquadric *qobjmoon = gluNewQuadric();
+
+
+            gluQuadricOrientation(qobjmoon, GLU_OUTSIDE);
+            gluQuadricDrawStyle(qobjmoon, GLU_FILL);
+
+            gluQuadricTexture(qobjmoon,GL_TRUE);
+            gluQuadricNormals(qobjmoon, GLU_SMOOTH);
+            glBindTexture(GL_TEXTURE_2D, 2);
+            gluSphere(qobjmoon, dimension/4, 60, 60);
+        }
+
 
         if(ring){
             glBindTexture(GL_TEXTURE_2D, 10);
@@ -119,7 +136,7 @@ void display(void){
     glColor3f (1.0, 1.0, 1.0);
 
     gluPerspective(fov, aspect, 1.0, 100.0);
-    gluLookAt (15, 5.0, 15, 0, 0, 0, 0.0, 1.0, 0.0);
+    gluLookAt (15, inclinacao, 15, 0, 0, 0, 0.0, 1.0, 0.0);
 
     glTranslatef (eixoX, 0.0, eixoZ);
     glRotatef(rot, 0.0, 1.0, 0.0);
@@ -138,7 +155,7 @@ void display(void){
 
     /* terra */
     orbitTrail(0, 0, dist_terra);
-    planet(4,v_terra,size_terra,dist_terra);
+    planet(4,v_terra,size_terra,dist_terra,false,true);
 
     /* marte */
     orbitTrail(0, 0, dist_marte);
@@ -205,6 +222,31 @@ void keyboard (unsigned char key, int x, int y)
             eixoZ -= 1;
             glutPostRedisplay();
             break;
+
+        case 'i':
+            if (inclinacao<29){
+                inclinacao+=1;
+                if(inclinacao<29){
+                    fov-=1;
+                }else{
+                    fov-=2;
+                }
+
+            }
+
+            glutPostRedisplay();
+            break;
+        case 'I':
+            if(inclinacao>0)
+            {
+                inclinacao-=1;
+                fov+=1;
+            }
+
+
+            glutPostRedisplay();
+            break;
+
         case 'z':
             fov-=1;
             glutPostRedisplay();
@@ -213,6 +255,8 @@ void keyboard (unsigned char key, int x, int y)
             fov+=1;
             glutPostRedisplay();
             break;
+
+
         case 'r':
             rot-=1;
             glutPostRedisplay();
@@ -221,6 +265,8 @@ void keyboard (unsigned char key, int x, int y)
             rot+=1;
             glutPostRedisplay();
             break;
+
+
         case 'p':
             day = (day + 10) ;
             glutPostRedisplay();
@@ -229,6 +275,8 @@ void keyboard (unsigned char key, int x, int y)
             day = (day - 10) ;
             glutPostRedisplay();
             break;
+
+
         case 'y':
             year = (year + 1) ;
             glutPostRedisplay();
@@ -237,10 +285,13 @@ void keyboard (unsigned char key, int x, int y)
             year = (year - 1) ;
             glutPostRedisplay();
             break;
+
+
         case 'g':
             automatico =!automatico;
             glutPostRedisplay();
             break;
+
         default:
             break;
     }
