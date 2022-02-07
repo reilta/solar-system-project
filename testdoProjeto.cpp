@@ -55,7 +55,7 @@ void mov() /* função usada para fazer a movimentação automática dos planetas */
     glutPostRedisplay();
 }
 
-void orbitTrail(GLfloat x, GLfloat y, GLfloat radius)
+void orbitTrail(GLfloat radius)
 {
 	int points = 100;
     glLineWidth(0.5); /* define a espessura da linha */
@@ -69,7 +69,7 @@ void orbitTrail(GLfloat x, GLfloat y, GLfloat radius)
         /* obtem o ângulo atual */
         GLfloat tetha = float(i) * 2.0 * PI / points;
         /* cria os pontos de uma circunferência e os une por uma linha */
-        glVertex2f(x + (radius * cos(tetha)), y + (radius * sin(tetha)));
+        glVertex2f((radius * cos(tetha)), (radius * sin(tetha)));
     }
     glEnd();
 
@@ -171,15 +171,15 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
     if(ring){
         glBindTexture(GL_TEXTURE_2D, 10);
         glRotatef(100, 1.0, 0.0, 0.0);
-        orbitTrail(0, 0, 0.64);
-        orbitTrail(0, 0, 0.67);
-        orbitTrail(0, 0, 0.69);
-        orbitTrail(0, 0, 0.7);
-        orbitTrail(0, 0, 0.74);
-        orbitTrail(0, 0, 0.78);
-        orbitTrail(0, 0, 0.8);
-        orbitTrail(0, 0, 0.85);
-        orbitTrail(0, 0, 0.88);
+        orbitTrail(0.64);
+        orbitTrail(0.67);
+        orbitTrail(0.69);
+        orbitTrail(0.7);
+        orbitTrail(0.74);
+        orbitTrail(0.78);
+        orbitTrail(0.8);
+        orbitTrail(0.85);
+        orbitTrail(0.88);
     }
     glPopMatrix();
 
@@ -210,35 +210,35 @@ void display(void)
     planet(1,v_sun,size_sun,dist_sun);
 
     /* mercurio */
-    orbitTrail(0, 0, dist_mercurio);
+    orbitTrail(dist_mercurio);
     planet(2,v_mercurio,size_mercurio,dist_mercurio);
 
     /* vênus */
-    orbitTrail(0, 0, dist_venus);
+    orbitTrail(dist_venus);
     planet(3,v_venus,size_venus,dist_venus);
 
     /* terra */
-    orbitTrail(0, 0, dist_terra);
+    orbitTrail(dist_terra);
     planet(4,v_terra,size_terra,dist_terra,false,true);
 
     /* marte */
-    orbitTrail(0, 0, dist_marte);
+    orbitTrail(dist_marte);
     planet(5,v_marte,size_marte,dist_marte);
 
     /* jupiter */
-    orbitTrail(0, 0, dist_jupiter);
+    orbitTrail(dist_jupiter);
     planet(6, v_jupiter,size_jupiter,dist_jupiter);
 
     /* saturno */
-    orbitTrail(0, 0, dist_saturno);
+    orbitTrail(dist_saturno);
     planet(7,v_saturno,size_saturno,dist_saturno,true);
 
     /* urano */
-    orbitTrail(0, 0, dist_urano);
+    orbitTrail(dist_urano);
     planet(8,v_urano,size_urano,dist_urano);
 
     /* netuno */
-    orbitTrail(0, 0, dist_netuno);
+    orbitTrail(dist_netuno);
     planet(9,v_netuno,size_netuno,dist_netuno);
 
     glPopMatrix();
