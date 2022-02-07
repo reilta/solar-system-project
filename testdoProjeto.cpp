@@ -80,14 +80,12 @@ void backgroundStarsTexture(int id)
 {
     glBindTexture(GL_TEXTURE_2D,id); /* define a textura pelo id */
 
-   // glEnable (GL_TEXTURE_2D); //
-
     /* cria seis quadrados, formando uma cubo, e associa os pontos das faces com a textura */
     glBegin(GL_QUADS);
-        glTexCoord2f(0,1);
-        glVertex3f(-50,50,-50);
         glTexCoord2f(0,0);
         glVertex3f(-50,-50,-50);
+        glTexCoord2f(0,1);
+        glVertex3f(-50,50,-50);
         glTexCoord2f(1,0);
         glVertex3f(50,-50,-50);
         glTexCoord2f(1,1);
