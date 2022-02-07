@@ -31,7 +31,6 @@ static bool automatico=false;
 void init(void)
 {
     glClearColor(0.0, 0.0, 0.0, 0.0);
-    glShadeModel(GL_FLAT); /* usando o modelo flat de calculo de iluminação */
     glEnable(GL_DEPTH_TEST); /* habilita o algoritimo de visibilidade */
     glEnable(GL_TEXTURE_2D); /* habilita as texturas */
 
@@ -86,58 +85,58 @@ void backgroundStarsTexture(int id)
     /* cria seis quadrados, formando uma cubo, e associa os pontos das faces com a textura */
     glBegin(GL_QUADS);
         glTexCoord2f(0,1);
-        glVertex3f(-50.f,50.f,-50.f);
+        glVertex3f(-50,50,-50);
         glTexCoord2f(0,0);
-        glVertex3f(-50.f,-50.f,-50.f);
+        glVertex3f(-50,-50,-50);
         glTexCoord2f(1,0);
-        glVertex3f(50.f,-50.f,-50.f);
+        glVertex3f(50,-50,-50);
         glTexCoord2f(1,1);
-        glVertex3f(50.f,50.f,-50.f);
+        glVertex3f(50,50,-50);
 
         glTexCoord2f(0,1);
-        glVertex3f(-50.f,-50.f,50.f);
+        glVertex3f(-50,-50,50);
         glTexCoord2f(0,0);
-        glVertex3f(-50.f,50.f,50.f);
+        glVertex3f(-50,50,50);
         glTexCoord2f(1,0);
-        glVertex3f(50.f,50.f,50.f);
+        glVertex3f(50,50,50);
         glTexCoord2f(1,1);
-        glVertex3f(50.f,-50.f,50.f);
+        glVertex3f(50,-50,50);
 
         glTexCoord2f(0,1);
-        glVertex3f(-50.f,-50.f,-50.f);
+        glVertex3f(-50,-50,-50);
         glTexCoord2f(0,0);
-        glVertex3f(-50.f,50.f,-50.f);
+        glVertex3f(-50,50,-50);
         glTexCoord2f(1,0);
-        glVertex3f(-50.f,50.f,50.f);
+        glVertex3f(-50,50,50);
         glTexCoord2f(1,1);
-        glVertex3f(-50.f,-50.f,50.f);
+        glVertex3f(-50,-50,50);
 
         glTexCoord2f(0,1);
-        glVertex3f(50.f,-50.f,-50.f);
+        glVertex3f(50,-50,-50);
         glTexCoord2f(0,0);
-        glVertex3f(50.f,50.f,-50.f);
+        glVertex3f(50,50,-50);
         glTexCoord2f(1,0);
-        glVertex3f(50.f,50.f,50.f);
+        glVertex3f(50,50,50);
         glTexCoord2f(1,1);
-        glVertex3f(50.f,-50.f,50.f);
+        glVertex3f(50,-50,50);
 
         glTexCoord2f(0,1);
-        glVertex3f(-50.f,-50.f,50.f);
+        glVertex3f(-50,-50,50);
         glTexCoord2f(0,0);
-        glVertex3f(-50.f,-50.f,-50.f);
+        glVertex3f(-50,-50,-50);
         glTexCoord2f(1,0);
-        glVertex3f(50.f,-50.f,-50.f);
+        glVertex3f(50,-50,-50);
         glTexCoord2f(1,1);
-        glVertex3f(50.f,-50.f,50.f);
+        glVertex3f(50,-50,50);
 
         glTexCoord2f(0,1);
-        glVertex3f(-50.f,50.f,50.f);
+        glVertex3f(-50,50,50);
         glTexCoord2f(0,0);
-        glVertex3f(-50.f,50.f,-50.f);
+        glVertex3f(-50,50,-50);
         glTexCoord2f(1,0);
-        glVertex3f(50.f,50.f,-50.f);
+        glVertex3f(50,50,-50);
         glTexCoord2f(1,1);
-        glVertex3f(50.f,50.f,50.f);
+        glVertex3f(50,50,50);
 
     glEnd();
 }
@@ -154,7 +153,7 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
 
     glRotatef((GLfloat) year*(velocity), 0.0, 1.0, 0.0); /* possibilita a rotação dos planetas em torno de um ponto inicial */
     glTranslatef(distance, 0.0, 0.0); /* desloca os planetas em relação ao ponto inicial */
-    glRotatef(100, 1.0, 0.0, 0.0);   /* rotaciona os planetas para alinhar a  textura da forma correta */
+    glRotatef(90, 1.0, 0.0, 0.0);   /* rotaciona os planetas para alinhar a  textura da forma correta */
     glRotatef((GLfloat) day, 0.0, 0.0, -1.0); /* rotaciona os planetas em torno do proprio eixo */
     gluSphere(qobj, dimension, 60, 60); /* cria uma esfera a partir do quadric */
 
@@ -162,11 +161,11 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
     if(moon){
         glRotatef((GLfloat) year*(velocity)*2, 0.0, 0.0, 1.0);
         glTranslatef(0.5, 0.0, 0.0);
-        //glRotatef((GLfloat) day*(velocity)*2, 0.0, 0.0, -1.0);
         GLUquadric *qobjmoon = gluNewQuadric();
         gluQuadricTexture(qobjmoon,GL_TRUE);
         glBindTexture(GL_TEXTURE_2D, 2);
         gluSphere(qobjmoon, dimension/4, 60, 60);
+        gluDeleteQuadric(qobjmoon);
     }
     /* cria aneis em volta dos planetas que habilitarem */
     if(ring){
@@ -260,7 +259,9 @@ void reshape(int w, int h)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fov, aspect, 1.0, 150.0);
-    //glMatrixMode(GL_MODELVIEW); /* especifica a matriz que vai ser aplicada as  proximas operações matriciais */
+    glMatrixMode(GL_MODELVIEW); /* especifica a matriz que vai ser aplicada as  proximas operações matriciais */
+    glLoadIdentity();
+    gluLookAt(15, inclinacao, 15, 0, 0, 0, 0.0, 1.0, 0.0); /* configuração da câmera */
 }
 
 void keyboard(unsigned char key, int x, int y)
