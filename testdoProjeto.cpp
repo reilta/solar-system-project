@@ -192,8 +192,12 @@ void display(void)
     glClear(GL_COLOR_BUFFER_BIT); /* limpa o buffer das cores */
     glClear(GL_DEPTH_BUFFER_BIT ); /* limpa o buffer da visibilidade */
 
+    glMatrixMode(GL_PROJECTION);
     glLoadIdentity(); /* carrega a matriz identidade */
     gluPerspective(fov, aspect, 1.0, 150.0); /* configura o frustrum */
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
     gluLookAt(15, inclinacao, 15, 0, 0, 0, 0.0, 1.0, 0.0); /* configuração da câmera */
     glTranslatef(eixoX, eixoY, eixoZ); /* habilita movimentação da câmera */
     glRotatef(rot, 0.0, 1.0, 0.0); /* habilita a rotação */
@@ -253,9 +257,10 @@ void reshape(int w, int h)
     aspect = (float)w/float(h); /* Calcula a  razão do aspecto */
 
     glViewport(0, 0, (GLsizei) w, (GLsizei) h); /* é a região retangular do near do frustrum */
-    //glMatrixMode(GL_PROJECTION);
+    glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW); /* especifica a matriz que vai ser aplicada as  proximas operações matriciais */
+    gluPerspective(fov, aspect, 1.0, 150.0);
+    //glMatrixMode(GL_MODELVIEW); /* especifica a matriz que vai ser aplicada as  proximas operações matriciais */
 }
 
 void keyboard(unsigned char key, int x, int y)
