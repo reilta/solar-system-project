@@ -10,9 +10,17 @@
 	<GL/glut.h>
 	<iostream>
 
-1644013780 source:e:\programação\opengl\solar-system-project\main.cpp
+1644432242 source:e:\programação\opengl\solar-system-project\main.cpp
 	<GL/gl.h>
 	<GL/glu.h>
 	<GL/glut.h>
 	<iostream>
+	<math.h>
+	"image_load/image_load.h"
+
+1644081352 e:\programação\opengl\solar-system-project\image_load\image_load.h
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<stdlib.h>
 

@@ -58,7 +58,7 @@ void mov() /* função usada para fazer a movimentação automática dos planetas */
 void orbitTrail(GLfloat radius)
 {
 	int points = 100;
-    glLineWidth(0.5); /* define a espessura da linha */
+    glLineWidth(0.5); /* define a largura da linha */
 	glPushMatrix();  /* insere a matriz de transformação atual na pilha */
 
     glRotatef((GLfloat) 90.0, 1.0, 0.0, 0.0); /* rotaciona as linhas para ficarem na horizontal */
@@ -66,7 +66,6 @@ void orbitTrail(GLfloat radius)
 
     /* definição dos pontos */
     for(int i = 0; i <= points; i++) {
-        /* obtem o ângulo atual */
         GLfloat tetha = float(i) * 2.0 * PI / points;
         /* cria os pontos de uma circunferência e os une por uma linha */
         glVertex2f((radius * cos(tetha)), (radius * sin(tetha)));
@@ -251,15 +250,14 @@ void display(void)
 
 void reshape(int w, int h)
 {
-    aspect = (float)w/float(h); /* Calcula a  razão do aspecto */
-
-    glViewport(0, 0, (GLsizei) w, (GLsizei) h); /* é a região retangular do near do frustrum */
+    aspect = (float)w/float(h);
+    glViewport(0, 0, (GLsizei) w, (GLsizei) h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fov, aspect, 1.0, 150.0);
-    glMatrixMode(GL_MODELVIEW); /* especifica a matriz que vai ser aplicada as  proximas operações matriciais */
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(15, inclinacao, 15, 0, 0, 0, 0.0, 1.0, 0.0); /* configuração da câmera */
+    gluLookAt(15, inclinacao, 15, 0, 0, 0, 0.0, 1.0, 0.0);
 }
 
 void keyboard(unsigned char key, int x, int y)
