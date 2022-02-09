@@ -1,6 +1,8 @@
 <h1>Solar-system-project</h1>
 
-Modelagem do sistema solar usando OpenGL em c++. Projeto final da disciplina de Computação Gráfica (DCA0114) na Universidade Federal do Rio Grande do Norte.
+Modelagem e visualização do sistema solar usando OpenGL em c++ utilizando de aspectos de texturas e transformações matriciais. Projeto final da disciplina de Computação Gráfica (DCA0114) na Universidade Federal do Rio Grande do Norte.
+
+<img src="giphy_solar_system.gif" alt="animated" />
 
 <h2>Dependências</h2>
 
