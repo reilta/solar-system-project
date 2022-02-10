@@ -1,3 +1,10 @@
+/*
+ UNIVERSIDADE FEDERAL DO RIO GRANDE DO NORTE
+ DEPARTAMENTO DE ENGENHARIA DE COMPUTAÇÃO E AUTOMAÇÃO
+ DISCIPLINA: COMPUTAÇÃO GRÁFICA (DCA0114)
+ DESENVOLVIDO POR: Igor Dias, Matheus Santos, Reilta Maia
+*/
+
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
@@ -10,7 +17,7 @@
 static float year = 0, day = 0, fov = 60, rot = 0, inclinacao = 5;
 static float aspect = 0, eixoX = 0, eixoY = 0, eixoZ = 0;
 
-/* distancia de cada objeto do ponto inicial */
+/* distância de cada objeto do ponto inicial */
 static float dist_sun = 0, dist_mercurio = 2.0, dist_venus = 3.0,
 dist_terra = 4.0, dist_marte = 5.0, dist_jupiter = 6.5,
 dist_saturno = 9.0, dist_urano = 11.0, dist_netuno = 13.0;
@@ -65,7 +72,7 @@ void orbitTrail(GLfloat radius)
 
     /* definição dos pontos */
     for(int i = 0; i <= points; i++) {
-        /* obtem o ângulo atual */
+        /* obtém o ângulo atual */
         GLfloat tetha = float(i) * 2.0 * PI / points;
         /* cria os pontos de uma circunferência e os une por uma linha */
         glVertex2f((radius * cos(tetha)), (radius * sin(tetha)));
@@ -140,7 +147,7 @@ void backgroundStarsTexture(int id)
 
 void planet(int id, float velocity, float dimension, float distance, bool ring = false, bool moon =false)
 {
-    /* cria um obejto do tipo quadric */
+    /* cria um objeto do tipo quadric */
     GLUquadric *qobj = gluNewQuadric();
 
     gluQuadricTexture(qobj,GL_TRUE); /* habilita a textura do objeto tipo quadric */
@@ -150,8 +157,8 @@ void planet(int id, float velocity, float dimension, float distance, bool ring =
 
     glRotatef((GLfloat) year*(velocity), 0.0, 1.0, 0.0); /* possibilita a rotação dos planetas em torno de um ponto inicial */
     glTranslatef(distance, 0.0, 0.0); /* desloca os planetas em relação ao ponto inicial */
-    glRotatef(90, 1.0, 0.0, 0.0);   /* rotaciona os planetas para alinhar a  textura da forma correta */
-    glRotatef((GLfloat) day, 0.0, 0.0, -1.0); /* rotaciona os planetas em torno do proprio eixo */
+    glRotatef(90, 1.0, 0.0, 0.0);   /* rotaciona os planetas para alinhar a textura da forma correta */
+    glRotatef((GLfloat) day, 0.0, 0.0, -1.0); /* rotaciona os planetas em torno do próprio eixo */
     gluSphere(qobj, dimension, 60, 60); /* cria uma esfera a partir do quadric */
 
     /* cria  a lua para os planetas que habilitarem */
@@ -241,7 +248,7 @@ void display(void)
     glPopMatrix();
     glutSwapBuffers();
 
-    /* aciona a rotação automatica se estiver habilitada */
+    /* aciona a rotação automática se estiver habilitada */
     if(automatico){
         mov();
         _sleep(35);
@@ -250,12 +257,12 @@ void display(void)
 
 void reshape(int w, int h)
 {
-    aspect = (float)w/float(h); /* Calcula a  razão do aspecto */
+    aspect = (float)w/float(h); /* calcula a razão do aspecto */
     glViewport(0, 0, (GLsizei) w, (GLsizei) h); /* é a região retangular do near do frustrum */
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fov, aspect, 1.0, 150.0);
-    glMatrixMode(GL_MODELVIEW); /* especifica a matriz que vai ser aplicada as  proximas operações matriciais */
+    glMatrixMode(GL_MODELVIEW); /* especifica a matriz que vai ser aplicada as próximas operações matriciais */
     glLoadIdentity();
     gluLookAt(15, inclinacao, 15, 0, 0, 0, 0.0, 1.0, 0.0); /* configuração da câmera */
 }
@@ -263,7 +270,7 @@ void reshape(int w, int h)
 void keyboard(unsigned char key, int x, int y)
 {
     switch(key) {
-        /* casos para mover a câmera nas 4 direções e para frente e para atrás (teclas a,w,s,d,q,e) */
+        /* casos para mover a câmera nas 4 direções e para frente e para trás (teclas a,w,s,d,q,e) */
         case 'a':
             eixoX += 0.2;
             glutPostRedisplay();
@@ -350,7 +357,7 @@ void keyboard(unsigned char key, int x, int y)
             year = (year - 1) ;
             glutPostRedisplay();
             break;
-        /* rotação automatica de todo o sistema */
+        /* rotação automática de todo o sistema */
         case 'g':
             automatico =!automatico;
             glutPostRedisplay();
@@ -368,11 +375,11 @@ int main(int argc, char** argv)
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB); /* modo */
     glutInitWindowSize(1000, 600); /* dimensão da janela */
     glutInitWindowPosition (0, 0); /* posição */
-    glutCreateWindow ("Solar System - Igor Dias/Matheus Santos/Reilta"); /* window's name */
+    glutCreateWindow ("Solar System - Igor Dias/Matheus Santos/Reilta"); /* nome da janela */
 
     /* chama as funções principais */
     init();
-    glutDisplayFunc(display); /* chamada quando um pixel na janela necessita ser atualizado. */
+    glutDisplayFunc(display); /* chamada quando um pixel na janela necessita ser atualizado */
     glutReshapeFunc(reshape); /* chamado quando a janela é redimensionada */
     glutKeyboardFunc(keyboard); /* chamada quando uma tecla do teclado é pressionada */
 
