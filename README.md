@@ -1,47 +1,47 @@
 <h1>Solar-system-project</h1>
 
-Modelagem e visualização do sistema solar usando OpenGL em c++ utilizando de aspectos de texturas e transformações matriciais. Projeto final da disciplina de Computação Gráfica (DCA0114) na Universidade Federal do Rio Grande do Norte.
+Modeling and visualization of the solar system using OpenGL in C++ using aspects of textures and matrix transformations. Final project for the Computer Graphics course (DCA0114) at the Federal University of Rio Grande do Norte.
 
 <img src="giphy_solar_system.gif" alt="animated" />
 
-<h2>Dependências</h2>
+<h2>Dependencies</h2>
 
 *   OpenGL
 *   GNU GCC compiler
 
-<h2>Observação</h2>
+<h2>Note</h2>
 
-Caso o usuário seja utilizador do sistema operacional Windows e deseje executar o código e utilizar do OpenGL, recomenda-se seguir o seguinte [guia](https://medium.com/swlh/setting-opengl-for-windows-d0b45062caf) para instalação das dependências.
+If you are using the Windows operating system and want to run the code and use OpenGL, we recommend that you follow this [guide](https://medium.com/swlh/setting-opengl-for-windows-d0b45062caf) to install the dependencies.
 
 
-<h2>Instalação</h2>
+<h2>Setup</h2>
 
     git clone https://github.com/reilta/solar-system-project
 
-<h2>Executando o código</h2>
+<h2>Running the code</h2>
 
 
     g++ -o main -lopengl32 -lglu32
 
 
-<h2>Controles</h2>
+<h2>Controls</h2>
 
-*   **a** - move a câmera para esquerda
-*   **d** - move a câmera para direita
-*   **w** - move a câmera para frente
-*   **s** - move a câmera para trás
-*   **q** - move a câmera para cima
-*   **e** - move a câmera para baixo
+*   **a** - moves the camera to the left
+*   **d** - moves the camera to the right
+*   **w** - moves the camera forward
+*   **s** - moves the camera backwards
+*   **q** - moves the camera up
+*   **e** - moves the camera down
 
-*   **i** - incrementa a inclinação da câmera
-*   **I** - decrementa a inclinação da câmera
+*   **i** - increases the camera's tilt
+*   **I** - decrements the camera's tilt
 
 *   **z** - zoom in
 *   **Z** - zoom out
-*   **r** - rotaciona a câmera no sentido horário
-*   **R** - rotaciona a câmera no sentido anti-horário
+*   **r** - rotates the camera clockwise
+*   **R** - rotates the camera counter-clockwise
 
-*   **p** - rotaciona os objetos no próprio eixo
-*   **y** - rotaciona os objetos em torno do ponto inicial
-*   **g** - rotação automática dos objetos
+*   **p** - rotates objects on their own axis
+*   **y** - rotates objects around the starting point
+*   **g** - automatic object rotation
 
